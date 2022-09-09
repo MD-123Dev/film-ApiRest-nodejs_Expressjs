@@ -4,8 +4,8 @@ const Joi = require('joi');
 const fs = require('fs');
 const formidable = require('formidable')
 
-//***add product  */
-exports.createProduct = (req, res) => {
+//***add film  */
+exports.createFilm= (req, res) => {
      
      //***image */
 
@@ -27,7 +27,9 @@ exports.createProduct = (req, res) => {
                 const schema = Joi.object({
                         name: Joi.string().required(),
                         description: Joi.string().required(),
-                        rate: Joi.number()
+                        rate: Joi.number(),
+                        category: Joi.required(),
+                        actor: Joi.required()
                     })
 
                     const { error } = schema.validate(fields);
@@ -194,7 +196,9 @@ exports.updateFilm = (req, res) => {
                 const schema = Joi.object({
                         name: Joi.string().required(),
                         description: Joi.string().required(),
-                        rate: Joi.number()
+                        rate: Joi.number(),
+                        category: Joi.required(),
+                        actor: Joi.required()
                     })
 
                    const  {error}  = schema.validate(fields);
@@ -244,3 +248,51 @@ exports.searchFilm = (req, res) => {
   
 }
 
+//***get film with category "" */
+
+ exports.getFilmWithCategory = (req, res ) => {
+    
+
+    Film.find({_id:req.params.filmId})
+           .select('-image')
+           .populate('category', 'name')
+           .exec((err, film) => {
+
+                if(err) {
+                    return res.status(404).json({
+                        error: "film not found !"
+                    })
+                }
+
+                res.json({
+                    film:film
+                })
+
+           })
+
+}
+
+//***get film with category and actors "" */
+
+ exports.getFilmWithCategoryAndActor = (req, res ) => {
+    
+
+    Film.find({_id:req.params.movieId})
+           .select('-image')
+           .populate('category', 'name')
+           .populate('actor', 'lastname nationality' )
+           .exec((err, film) => {
+
+                if(err) {
+                    return res.status(404).json({
+                        error: "film not found !"
+                    })
+                }
+
+                res.json({
+                    film:film
+                })
+
+           })
+
+}
