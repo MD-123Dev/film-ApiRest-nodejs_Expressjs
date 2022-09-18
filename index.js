@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const filmRoute = require('./routes/film');
 const categoryRoute = require('./routes/category');
 const actorRoute = require('./routes/actor');
-
+const userRoute = require('./routes/user');
   
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended:true}));
@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended:true}));
 app.use('/api',filmRoute);
 app.use('/api',categoryRoute);
 app.use('/api',actorRoute);
+app.use('/api',userRoute);
 
 //**** connect with mongodb */
  var dbURL = require("./env").DB_URL;
@@ -28,6 +29,7 @@ mongoose.connect(dbURL)
 //*
 
 
+require('dotenv').config();
 
 
 app.use(cors())
